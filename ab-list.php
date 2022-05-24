@@ -7,7 +7,7 @@ $title = '通訊列表';
 // 這邊是為了方便, 要不然表格不適合用於RWD
 
 //每一頁最多有幾筆
-$perPage = 5;
+$perPage = 20;
 
 // 用戶要看第幾頁
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;

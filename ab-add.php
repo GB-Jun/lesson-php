@@ -8,7 +8,8 @@ $title = '新增通訊資料'
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">新增資料</h5>
-            <form name="form1" onsubmit="return false">
+            <form name="form1" onsubmit="sendData(); return false" novalidate>
+                <!-- novalidate 是停用html的檢察功能 -->
                 <div class="mb-3">
                     <label for="name" class="form-label">* name</label>
                     <input type="text" class="form-control" id="name" name="name" required>
@@ -44,4 +45,16 @@ $title = '新增通訊資料'
 
 
 <?php include __DIR__ . './parts/scripts.php' ?>
+<script>
+    async function sendData() {
+        // TODO: 1.檢查欄位 2.取表單內容
+        const fd = new FormData(document.form1);
+        const r = await fetch('ab-add-api.php',{
+            method: 'POST',
+            body: fd,
+        });
+        const result = await r.json();
+        console.log(result);
+    }
+</script>
 <?php include __DIR__ . './parts/html-foot.php' ?>
