@@ -62,17 +62,22 @@ if ($totalRows > 0) {
                 <ul class="pagination">
 
                     <!-- php寫在class裡面, 讓使用者按頁術限定在1到最大頁面之間 -->
+                    <li class="page-item <?= $page == 1 ? 'disabled' : ''; ?>"><a class="page-link" href="?page=1">first</a></li>
                     <li class="page-item <?= $page == 1 ? 'disabled' : ''; ?>"><a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a></li>
 
-                    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <?php for ($i = $page - 3; $i <= $page + 3; $i++) :
+                        if ($i >= 1 and $i <= $totalPages) :
+                    ?>
 
-                        <li class="page-item <?= $page == $i ? 'active ' : ''; ?>">
-                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                        </li>
+                            <li class="page-item <?= $page == $i ? 'active ' : ''; ?>">
+                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
 
-                    <?php endfor; ?>
+                    <?php endif;
+                    endfor; ?>
 
                     <li class="page-item <?= $page == $totalPages ? 'disabled' : ''; ?>"><a class="page-link" href="?page=<?= $page + 1 ?>">Next</a></li>
+                    <li class="page-item <?= $page == $totalPages ? 'disabled' : ''; ?>"><a class="page-link" href="?page=<?= $totalPages ?>">last</a></li>
 
 
                 </ul>
