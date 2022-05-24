@@ -1,4 +1,4 @@
-<?php require __DIR__ . './parts/connet_db.php';
+<?php require __DIR__ . './parts/connect_db.php';
 
 // MVC的MC部分在這邊寫
 // 這邊是為了方便, 要不然表格不適合用於RWD
