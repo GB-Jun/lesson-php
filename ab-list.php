@@ -1,5 +1,8 @@
 <?php require __DIR__ . './parts/connect_db.php';
 
+$pageName = 'ab-list';
+$title = '通訊列表';
+
 // MVC的MC部分在這邊寫
 // 這邊是為了方便, 要不然表格不適合用於RWD
 
