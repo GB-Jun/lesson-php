@@ -25,7 +25,7 @@ if (!isset($pageName)) {
                         <a class="nav-link <?= $pageName == 'index' ? 'active' : ''; ?>" href="./index_.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" <?= $pageName == 'ab-list' ? 'active' : ''; ?> href="./ab-list.php">ab-list</a>
+                        <a class="nav-link <?= $pageName == 'ab-list' ? 'active' : ''; ?>" href="./ab-list.php">ab-list</a>
                     </li>
                 </ul>
 
