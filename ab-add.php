@@ -67,7 +67,7 @@ $title = '新增通訊資料'
             alert('姓名至少兩個字');
             ifPass = false;
         }
-        // 有填內容時 email_f.value的boolean就會為true, 才會檢查格式
+        // 有填內容時 email_f.value的boolean就會為true, 才會檢查格式, test是檢查()裡面的值是否有符合前面的regExp規則, 有為true, 沒有為false
         if (email_f.value && !email_re.test(email_f.value)) {
             alert('email 格式錯誤');
             isPass = false;

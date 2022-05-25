@@ -21,12 +21,13 @@ if (empty($_POST['name'])) {
 }
 
 $name = $_POST['name'];
+// ?? 的前面是undefined的話, 會放入後面的值, 否則維持
 $email = $_POST['email'] ?? '';
 $mobile = $_POST['mobile'] ?? '';
 $birthday = empty($_POST['birthday']) ? NULL : $_POST['birthday'];
 $address = $_POST['address'] ?? '';
 // 如果這欄不是空字串時, 這邊檢查是否符合email格式
-if(! empty($email) and filter_var($email, FILTER_VALIDATE_EMAIL)===false){
+if (!empty($email) and filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     $output['error'] = 'email 格式錯誤';
     $output['code'] = 405;
     // filter_var($email, FILTER_VALIDATE_EMAIL)
