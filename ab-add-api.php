@@ -22,10 +22,10 @@ if (empty($_POST['name'])) {
 
 
 $sql = "INSERT INTO `address_book`(
-    `sid`, `name`, `email`, 
-    `mobile`, `birthday`, `address`, `created_at`
+    `name`, `email`, `mobile`, 
+    `birthday`, `address`, `created_at`
     ) VALUES (
-        ?, ?, ?
+        ?, ?, ?,
         ?, ?, NOW()
     )";
 
@@ -45,12 +45,13 @@ $stmt->execute([
 // $output['success'] = $stmt->rowcount();
 
 if ($stmt->rowCount() == 1) {
-
     $output['success'] = true;
+    // 最近新增資料的 primary key, 可以拿去做foreign key
+    $output['lastInsertId'] = $pdo->lastInsertId();
 } else {
     $output['error'] = '資料無法新增';
 }
 
-
+// isset() vs empty() , isset是有沒有設定, 不管是不是空,0,false,空陣列有設定就是有設定, empty沒有設定就是true 空陣列也回拿true
 
 echo json_encode($output, JSON_UNESCAPED_UNICODE);
