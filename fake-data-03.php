@@ -7,7 +7,7 @@
     $fname = ['小明', '小華', '怡君', '雅玲', '振翰', '曉君'];
 
 
-
+    // 幾個問號就要搭配幾個值
     $sql = "INSERT INTO `address_book`(
     `name`, `email`, `mobile`, 
     `birthday`, `address`, `created_at`
@@ -16,6 +16,7 @@
         ?, ?, NOW()
     )";
 
+    // prepare 和 execute是搭配使用的
     $stmt = $pdo->prepare($sql);
 
     for ($i = 0; $i < 100; $i++) {
