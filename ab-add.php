@@ -46,10 +46,10 @@ $title = '新增通訊資料'
 
 <?php include __DIR__ . './parts/scripts.php' ?>
 <script>
-    async function sendData() {
-        // TODO: 1.檢查欄位 2.取表單內容
+        async function sendData() {
+        // TODO: 1.檢查欄位, 前端的檢查 2.取表單內容
         const fd = new FormData(document.form1);
-        const r = await fetch('ab-add-api.php',{
+        const r = await fetch('ab-add-api.php', {
             method: 'POST',
             body: fd,
         });
