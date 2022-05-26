@@ -36,11 +36,12 @@ if (empty($row)) {
         <div class="card-body">
             <h5 class="card-title">編輯資料</h5>
             <form name="form1" onsubmit="sendData(); return false" novalidate>
+                <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
                 <div class="mb-3">
                     <label for="name" class="form-label">* name</label>
                     <input type="text" class="form-control" id="name" name="name" required value="<?= htmlentities($row['name'])
-                    // 為了避免XSS 另外可以用strip_tags
-                    ?>">
+                                                                                                    // htmlentities為了避免XSS 另外可以用strip_tags
+                                                                                                    ?>">
                     <div class="form-text red"></div>
                 </div>
                 <div class="mb-3">
@@ -60,10 +61,10 @@ if (empty($row)) {
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">address</label>
-                    <textarea class="form-control" name="address" id="address" cols="30" rows="3"><?= htmlentities($row['name']) ?>"</textarea>
+                    <textarea class="form-control" name="address" id="address" cols="30" rows="3"><?= htmlentities($row['address']) ?></textarea>
                     <div class="form-control"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">修改資料</button>
                 <div id="info_bar" class="alert alert-success" role="alert" style="display:none;">
                     資料修改成功
                 </div>
@@ -76,7 +77,7 @@ if (empty($row)) {
 
 <?php include __DIR__ . './parts/scripts.php' ?>
 <script>
-    const row = <?= json_encode($row, JSON_UNESCAPED_UNICODE); ?>;
+    // const row = <?= json_encode($row, JSON_UNESCAPED_UNICODE); ?>;
 
 
 
@@ -109,44 +110,43 @@ if (empty($row)) {
             fields[0].classList.add('red');
             fieldTexts[0].innerText = '姓名至少兩個字';
             isPass = false;
-        }
+        };
         if (email_f.value && !email_re.test(email_f.value)) {
             fields[1].classList.add('red');
             fieldTexts[1].innerText = 'email 格式錯誤';
             isPass = false;
-        }
+        };
         if (mobile_f.value && !mobile_re.test(mobile_f.value)) {
             fields[2].classList.add('red');
             fieldTexts[2].innerText = '手機格式錯誤';
             isPass = false;
-        }
-
+        };
 
         if (!isPass) {
             return;
         }
 
         const fd = new FormData(document.form1);
-        const r = await fetch('ab-add-api.php', {
+        const r = await fetch('ab-edit-api.php', {
             method: 'POST',
             body: fd,
         });
         const result = await r.json();
         console.log(result);
-        info_bar.style.display = 'block'; // 顯示訊息列
+        info_bar.style.display = 'block';
         if (result.success) {
             info_bar.classList.remove('alert-danger');
             info_bar.classList.add('alert-success');
-            info_bar.innerText = '新增成功0'
+            info_bar.innerText = '修改成功0'
 
 
-            // setTimeout(() => {
-            //     location.href = 'ab-list.php'; // 跳轉列表頁
-            // }, 2000)
+            setTimeout(() => {
+                //     location.href = 'ab-list.php'; // 跳轉列表頁
+            }, 2000)
         } else {
             info_bar.classList.remove('alert-success');
             info_bar.classList.add('alert-danger');
-            info_bar.innerText = result.error || '資料無法新增1';
+            info_bar.innerText = result.error || '資料沒有修改1';
         }
     }
 </script>
