@@ -111,14 +111,18 @@ if ($totalRows > 0) {
         <tbody>
             <?php foreach ($rows as $r) : ?>
                 <tr>
-                    <td><a href="#"><i class="fa-solid fa-trash-can"></i></a></td>
+                    <td><a href="ab-delete.php?sid=<?= $r['sid'] ?>">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a></td>
                     <td><?= $r['sid'] ?></td>
                     <td><?= $r['name'] ?></td>
                     <td><?= $r['mobile'] ?></td>
                     <td><?= $r['email'] ?></td>
                     <td><?= $r['birthday'] ?></td>
                     <td><?= $r['address'] ?></td>
-                    <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a href="ab-edit.php?sid=<?= $r['sid'] ?>">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
