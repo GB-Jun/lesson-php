@@ -48,8 +48,10 @@ $title = '新增通訊資料'
                     <textarea class="form-control" name="address" id="address" cols="30" rows="3"></textarea>
                     <div class="form-control"></div>
                 </div>
-
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <div id="info_bar" class="alert alert-success" role="alert" style="display:none;">
+                    資料新增成功
+                </div>
             </form>
         </div>
     </div>
@@ -59,10 +61,11 @@ $title = '新增通訊資料'
 
 <?php include __DIR__ . './parts/scripts.php' ?>
 <script>
-    const email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|((a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/;
+    const email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/;
     const mobile_re = /^09\d{2}-?\d{3}-?\d{3}$/;
 
     // 這邊是拿到欄位的參照而不是值
+    const info_bar = document.querySelector('#info_bar');
     const name_f = document.form1.name;
     const email_f = document.form1.email;
     const mobile_f = document.form1.mobile;
@@ -80,6 +83,7 @@ $title = '新增通訊資料'
             fields[i].classList.remove('red');
             fieldTexts[i].innerText = '';
         }
+        info_bar.style.display = 'none'; // 都沒有時先隱藏訊息列
 
 
         // TODO: 1.檢查欄位, 前端的檢查 2.取表單內容
@@ -102,7 +106,7 @@ $title = '新增通訊資料'
             fields[0].classList.add('red');
             // fieldTexts[0].classList.add('red'); 直接加到HTML裡面, 沒有文字也不會顯示, 所以不用刪掉或新增這個div的red class
             fieldTexts[0].innerText = '姓名至少兩個字';
-            ifPass = false;
+            isPass = false;
         }
         // 有填內容時 email_f.value的boolean就會為true, 才會檢查格式, test是檢查()裡面的值是否有符合前面的regExp規則, 有為true, 沒有為false
         if (email_f.value && !email_re.test(email_f.value)) {
@@ -111,7 +115,7 @@ $title = '新增通訊資料'
             fieldTexts[1].innerText = 'email 格式錯誤';
             isPass = false;
         }
-        if (mobile_f.value && !mobile_re.test(email_f.value)) {
+        if (mobile_f.value && !mobile_re.test(mobile_f.value)) {
             // alert('手機格式錯誤');
             fields[2].classList.add('red');
             fieldTexts[2].innerText = '手機格式錯誤';
@@ -120,7 +124,7 @@ $title = '新增通訊資料'
 
 
         if (!isPass) {
-            return; // 沒有通過時, 就直接結束函式
+            return; // 結束函式
         }
 
         const fd = new FormData(document.form1);
@@ -130,6 +134,21 @@ $title = '新增通訊資料'
         });
         const result = await r.json();
         console.log(result);
+        info_bar.style.display = 'block'; // 顯示訊息列
+        if (result.success) {
+            info_bar.classList.remove('alert-danger');
+            info_bar.classList.add('alert-success');
+            info_bar.innerText = '新增成功0'
+
+
+            // setTimeout(() => {
+            //     location.href = 'ab-list.php'; // 跳轉列表頁
+            // }, 2000)
+        } else {
+            info_bar.classList.remove('alert-success');
+            info_bar.classList.add('alert-danger');
+            info_bar.innerText = result.error || '資料無法新增1';
+        }
     }
 </script>
 <?php include __DIR__ . './parts/html-foot.php' ?>
