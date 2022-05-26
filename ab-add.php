@@ -1,65 +1,68 @@
-<?php require __DIR__ . './parts/connect_db.php';
+<?php require __DIR__ . '/parts/connect_db.php';
 $pageName = 'ab-add';
-$title = '新增通訊資料'
+$title = '新增通訊資料';
 ?>
-<?php include __DIR__ . './parts/html-head.php' ?>
-<?php include __DIR__ . './parts/navbar.php' ?>
+<?php include __DIR__ . '/parts/html-head.php' ?>
+<?php include __DIR__ . '/parts/navbar.php' ?>
 <style>
     .form-control.red {
         border: 1px solid red;
     }
 
-    .red {
+    .form-text.red {
         color: red;
     }
 </style>
 <div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">新增資料</h5>
-            <form name="form1" onsubmit="sendData(); return false" novalidate>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">新增資料</h5>
+            <form name="form1" onsubmit="sendData(); return false;" novalidate>
                 <!-- data-novalidate, data- 開發者自訂的屬性 這邊等於暫時取消他的功能 -->
                 <!-- novalidate 是停用html的檢察功能 -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">* name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="form-text red"></div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">* name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="form-text red"></div>
                     <!-- // 姓名有沒有填 -->
-                </div>
-                <div class="mb-3">
+                        </div>
+                        <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email">
-                    <div class="form-text red"></div>
+                            <input type="email" class="form-control" id="email" name="email">
+                            <div class="form-text red"></div>
                     <!-- // email 有填的話有沒有符合格式 -->
-                </div>
-                <div class="mb-3">
-                    <label for="mobile" class="form-label">mobile</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile" pattern="09\d{8}">
-                    <div class="form-text red"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">mobile</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" pattern="09\d{8}">
+                            <div class="form-text red"></div>
                     <!-- // 手機有填的話有沒有符合格式 -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthday" class="form-label">birthday</label>
+                            <input type="date" class="form-control" id="birthday" name="birthday">
+                            <div class="form-text"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">address</label>
+                            <textarea class="form-control" name="address" id="address" cols="30" rows="3"></textarea>
+                            <div class="form-text"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">新增</button>
+                    </form>
+                    <div id="info_bar" class="alert alert-success" role="alert" style="display:none;">
+                        資料新增成功
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="birthday" class="form-label">birthday</label>
-                    <input type="date" class="form-control" id="birthday" name="birthday">
-                    <div class="form-text"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="address" class="form-label">address</label>
-                    <textarea class="form-control" name="address" id="address" cols="30" rows="3"></textarea>
-                    <div class="form-control"></div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <div id="info_bar" class="alert alert-success" role="alert" style="display:none;">
-                    資料新增成功
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
 </div>
-
-
-<?php include __DIR__ . './parts/scripts.php' ?>
+<?php include __DIR__ . '/parts/scripts.php' ?>
 <script>
     const email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/;
     const mobile_re = /^09\d{2}-?\d{3}-?\d{3}$/;
@@ -75,6 +78,7 @@ $title = '新增通訊資料'
     for (let f of fields) {
         fieldTexts.push(f.nextElementSibling);
     }
+
 
 
     async function sendData() {
@@ -138,17 +142,17 @@ $title = '新增通訊資料'
         if (result.success) {
             info_bar.classList.remove('alert-danger');
             info_bar.classList.add('alert-success');
-            info_bar.innerText = '新增成功0'
+            info_bar.innerText = '新增成功';
 
-
-            // setTimeout(() => {
-            //     location.href = 'ab-list.php'; // 跳轉列表頁
-            // }, 2000)
+            setTimeout(() => {
+                // location.href = 'ab-list.php'; // 跳轉到列表頁
+            }, 2000);
         } else {
             info_bar.classList.remove('alert-success');
             info_bar.classList.add('alert-danger');
-            info_bar.innerText = result.error || '資料無法新增1';
+            info_bar.innerText = result.error || '資料無法新增';
         }
+
     }
 </script>
-<?php include __DIR__ . './parts/html-foot.php' ?>
+<?php include __DIR__ . '/parts/html-foot.php' ?>

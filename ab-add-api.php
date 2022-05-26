@@ -1,9 +1,10 @@
-<?php require __DIR__ . './parts/connect_db.php';
+<?php
+require __DIR__ . '/parts/connect_db.php';
 header('Content-Type: application/json');
 
 
 $output = [
-    'success' => 'false',
+    'success' => false,
     'postData' => $_POST,
     'code' => 0, // 一個辨識資料
     'error' => ''
@@ -16,7 +17,6 @@ if (empty($_POST['name'])) {
     $output['error'] = '沒有姓名資料';
     $output['code'] = 400; // 自己定的規則, 這邊是沒有資料
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
-    // echo json_encode($stmt->rowCount());
     exit;
 }
 
