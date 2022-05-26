@@ -4,6 +4,15 @@ $title = '新增通訊資料'
 ?>
 <?php include __DIR__ . './parts/html-head.php' ?>
 <?php include __DIR__ . './parts/navbar.php' ?>
+<style>
+    .form-control.red {
+        border: 1px solid red;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
 <div class="container">
     <div class="card">
         <div class="card-body">
@@ -14,19 +23,19 @@ $title = '新增通訊資料'
                 <div class="mb-3">
                     <label for="name" class="form-label">* name</label>
                     <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="form-text"></div>
+                    <div class="form-text red"></div>
                     <!-- // 姓名有沒有填 -->
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="email" name="email">
-                    <div class="form-text"></div>
+                    <div class="form-text red"></div>
                     <!-- // email 有填的話有沒有符合格式 -->
                 </div>
                 <div class="mb-3">
                     <label for="mobile" class="form-label">mobile</label>
                     <input type="text" class="form-control" id="mobile" name="mobile" pattern="09\d{8}">
-                    <div class="form-text"></div>
+                    <div class="form-text red"></div>
                     <!-- // 手機有填的話有沒有符合格式 -->
                 </div>
                 <div class="mb-3">
@@ -58,22 +67,54 @@ $title = '新增通訊資料'
     const email_f = document.form1.email;
     const mobile_f = document.form1.mobile;
 
+    const fields = [name_f, email_f, mobile_f];
+    const fieldTexts = [];
+    for (let f of fields) {
+        fieldTexts.push(f.nextElementSibling);
+    }
+
 
     async function sendData() {
+        // 當格式正確後讓欄位的外觀回復原來的狀態
+        for (let i in fields) {
+            fields[i].classList.remove('red');
+            fieldTexts[i].innerText = '';
+        }
+
+
         // TODO: 1.檢查欄位, 前端的檢查 2.取表單內容
         let isPass = true; // 預設是通過檢查
 
         if (name_f.value.length < 2) {
-            alert('姓名至少兩個字');
+            // 盡量不要用alert, 他會停止讀取
+            // alert('姓名至少兩個字');
+            // 先寫css, 然後在html裡面測試後, 刪掉加上的class再回來這邊寫
+
+
+            // 可以查classlist, 以前是用className, nextElememtSibling也是新使用(牽扯到了dom的遊走)
+            // name_f.classList.add('red');
+            // name_f.nextElementSibling.classlist.add('red');
+
+            // 先用closest向外找()內的標籤, 用parentNode是向上一層 , 再用querySelector向內找()內的標籤
+            // name_f.closest('.mb-3').querySelector('.form-text').classList.add('red');
+
+            // 用一個全部測試完之後 再改成迴圈來寫, 並加到全部需要的
+            fields[0].classList.add('red');
+            // fieldTexts[0].classList.add('red'); 直接加到HTML裡面, 沒有文字也不會顯示, 所以不用刪掉或新增這個div的red class
+            fieldTexts[0].innerText = '姓名至少兩個字';
             ifPass = false;
         }
         // 有填內容時 email_f.value的boolean就會為true, 才會檢查格式, test是檢查()裡面的值是否有符合前面的regExp規則, 有為true, 沒有為false
         if (email_f.value && !email_re.test(email_f.value)) {
-            alert('email 格式錯誤');
+            // alert('email 格式錯誤');
+            fields[1].classList.add('red');
+            fieldTexts[1].innerText = 'email 格式錯誤';
             isPass = false;
         }
         if (mobile_f.value && !mobile_re.test(email_f.value)) {
-            alert('手機格式錯誤');
+            // alert('手機格式錯誤');
+            fields[2].classList.add('red');
+            fieldTexts[2].innerText = '手機格式錯誤';
             isPass = false;
         }
 
