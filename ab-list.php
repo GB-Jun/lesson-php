@@ -111,9 +111,14 @@ if ($totalRows > 0) {
         <tbody>
             <?php foreach ($rows as $r) : ?>
                 <tr>
-                    <td><a href="ab-delete.php?sid=<?= $r['sid'] ?>">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </a></td>
+                    <td>
+                        <?php /*    
+                    <a href="ab-delete.php?sid=<?= $r['sid'] ?>" onclick="return comfirm('確定要刪除編號為<?= $r['sid'] ?>的資料嗎?'">
+                    */ ?>
+                        <a href="javascript: delete_it(<?= $r['sid'] ?>)">
+                            <i class=" fa-solid fa-trash-can"></i>
+                        </a>
+                    </td>
                     <td><?= $r['sid'] ?></td>
                     <td><?= $r['name'] ?></td>
                     <td><?= $r['mobile'] ?></td>
@@ -130,4 +135,11 @@ if ($totalRows > 0) {
 
 </table>
 <?php include __DIR__ . './parts/scripts.php' ?>
+<script>
+    function delete_it(sid) {
+        if (confirm(`確定要刪除資料編號為${sid}的資料嗎?`)) {
+            location.href = `ab-delete.php?sid=${sid}`;
+        }
+    }
+</script>
 <?php include __DIR__ . './parts/html-foot.php' ?>
