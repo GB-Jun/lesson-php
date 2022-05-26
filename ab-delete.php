@@ -5,4 +5,10 @@ if (!empty($sid)) {
     $pdo->query("DELETE FROM `address_book` WHERE sid=$sid");
 };
 
-header('Location: ab-list.php');
+$come_from = 'ab-list.php';
+if (!empty($_SERVER['HTTP_REFERER'])) {
+    $come_from = $_SERVER['HTTP_REFERER'];
+}
+
+
+header("Location: $come_from");
