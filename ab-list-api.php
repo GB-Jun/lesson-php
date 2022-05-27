@@ -1,61 +1,40 @@
-<?php
-require __DIR__ . '/parts/connect_db.php';
-header('Content-Type: application/json');
+<?php require __DIR__ . '/parts/connect_db.php';
+$pageName = 'ab-list';
+$title = '通訊錄列表';
+
+$perPage = 20; // 每一頁有幾筆
+
+// 用戶要看第幾頁
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+if ($page < 1) {
+    header('Location: ?page=1');
+    exit;
+}
+
+$t_sql = "SELECT COUNT(1) FROM address_book";
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 總筆數
+
+$totalPages = ceil($totalRows / $perPage); // 總共有幾頁
+
+$rows = [];
+
+if ($totalRows > 0) {
+    // 頁碼若超過總頁數
+    if ($page > $totalPages) {
+        header("Location: ?page=$totalPages");
+        exit;
+    }
+
+    $sql = sprintf("SELECT * FROM address_book ORDER BY sid DESC LIMIT %s, %s", ($page - 1) * $perPage, $perPage);
+    $rows = $pdo->query($sql)->fetchAll();
+}
 
 $output = [
-    'success' => false,
-    'postData' => $_POST,
-    'code' => 0,
-    'error' => ''
+    'perPage' => $perPage,
+    'page' => $page,
+    'totalRows' => $totalRows,
+    'totalPages' => $totalPages,
+    'rows' => $rows,
 ];
-
-
-$sid = isset($_POST['sid']) ? intval($_POST['sid']) : 0;
-
-if (empty($sid) or empty($_POST['name'])) {
-    $output['error'] = '沒有姓名資料';
-    $output['code'] = 400;
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-$name = $_POST['name'];
-$email = $_POST['email'] ?? '';
-$mobile = $_POST['mobile'] ?? '';
-$birthday = empty($_POST['birthday']) ? NULL : $_POST['birthday'];
-$address = $_POST['address'] ?? '';
-
-
-if (!empty($email) and filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-    $output['error'] = 'email 格式錯誤';
-    $output['code'] = 405;
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
-    exit;
-}
-// TODO 其他欄位檢查
-
-
-$sql = "UPDATE `address_book` SET `name`=?, `email`=?, `mobile`=?, `birthday`=?, `address`=? WHERE `sid`=$sid ";
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute([
-    $name,
-    $email,
-    $mobile,
-    $birthday,
-    $address,
-]);
-
-// echo $stmt->rowCount();
-// echo json_encode($output, JSON_UNESCAPED_UNICODE);
-// exit;
-
-if ($stmt->rowCount() == 1) {
-    $output['success'] = true;
-} else {
-    $output['error'] = '資料沒有修改';
-}
-
 
 echo json_encode($output, JSON_UNESCAPED_UNICODE);
